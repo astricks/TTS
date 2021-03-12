@@ -180,8 +180,7 @@ def modi(root_path, meta_file):
             cols = line.split('|')
             wav_file = os.path.join(root_path, cols[0])
             text = cols[1]
-            if hasNumbers(text) is False:
-                items.append([text, wav_file, speaker_name])
+            items.append([text, wav_file, speaker_name])
     return items
 
 
