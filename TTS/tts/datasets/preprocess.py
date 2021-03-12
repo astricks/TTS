@@ -166,6 +166,9 @@ def ljspeech(root_path, meta_file):
     return items
 
 
+def hasNumbers(inputString):
+    return any(char.isdigit() for char in inputString)
+
 def modi(root_path, meta_file):
     """Normalizes the modi data file to TTS format"""
     print(root_path + ', ' + meta_file)
@@ -177,8 +180,8 @@ def modi(root_path, meta_file):
             cols = line.split('|')
             wav_file = os.path.join(root_path, cols[0])
             text = cols[1]
-            items.append([text, wav_file, speaker_name])
-    print(items[0])
+            if hasNumbers(text) is False:
+                items.append([text, wav_file, speaker_name])
     return items
 
 
