@@ -188,6 +188,16 @@ def css10(root_path, meta_file):
     txt_file = os.path.join(root_path, meta_file)
     items = []
     speaker_name = "ljspeech"
+
+def hasNumbers(inputString):
+    return any(char.isdigit() for char in inputString)
+
+def modi(root_path, meta_file):
+    """Normalizes the modi data file to TTS format"""
+    print(root_path + ', ' + meta_file)
+    txt_file = os.path.join(root_path, meta_file)
+    items = []
+    speaker_name = "modi"
     with open(txt_file, 'r') as ttf:
         for line in ttf:
             cols = line.split('|')
