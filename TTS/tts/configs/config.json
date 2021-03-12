@@ -1,7 +1,7 @@
 {
     "model": "Tacotron2",
-    "run_name": "ljspeech-ddc",
-    "run_description": "tacotron2 with DDC and differential spectral loss.",
+    "run_name": "modi",
+    "run_description": "modi without gst",
 
     // AUDIO PARAMETERS
     "audio":{
@@ -37,7 +37,6 @@
         "symmetric_norm": true, // move normalization to range [-1, 1]
         "max_norm": 4.0,        // scale normalization to range [-max_norm, max_norm] or [0, max_norm]
         "clip_norm": true,      // clip normalized values into the range.
-        "stats_path": ""    // DO NOT USE WITH MULTI_SPEAKER MODEL. scaler stats file computed by 'compute_statistics.py'. If it is defined, mean-std based notmalization is used and other normalization params are ignored
     },
 
     // VOCABULARY PARAMETERS
