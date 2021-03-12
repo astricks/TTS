@@ -178,6 +178,7 @@ def modi(root_path, meta_file):
             wav_file = os.path.join(root_path, cols[0])
             text = cols[1]
             items.append([text, wav_file, speaker_name])
+    print(items[0])
     return items
 
 
