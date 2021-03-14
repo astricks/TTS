@@ -53,6 +53,7 @@ class MyDataset(Dataset):
             verbose (bool): print diagnostic information.
         """
         self.batch_group_size = batch_group_size
+        print("-=------>>>> " + str(batch_group_size))
         self.items = meta_data
         self.outputs_per_step = outputs_per_step
         self.sample_rate = ap.sample_rate
