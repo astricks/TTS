@@ -169,11 +169,10 @@ def train(model, optimizer, criterion, scheduler, scaler, ap, global_step, epoch
                                       )
 
         # plot step stats
-        if global_step % 10 == 0:
+        if args.rank == 0 and global_step % 10 == 0:
             iter_stats = {"lr": cur_lr, "step_time": step_time}
             iter_stats.update(loss_dict)
             tb_logger.tb_train_iter_stats(global_step, iter_stats)
-
         # save checkpoint
         if global_step % c.save_step == 0:
             if c.checkpoint:
@@ -225,13 +224,14 @@ def train(model, optimizer, criterion, scheduler, scaler, ap, global_step, epoch
     c_logger.print_train_epoch_end(global_step, epoch, epoch_time, keep_avg)
 
     # Plot Training Epoch Stats
-    epoch_stats = {"epoch_time": epoch_time}
-    epoch_stats.update(keep_avg.avg_values)
-    tb_logger.tb_train_epoch_stats(global_step, epoch_stats)
-    # TODO: plot model stats
-    # if c.tb_model_param_stats:
-    # tb_logger.tb_model_weights(model, global_step)
-    return keep_avg.avg_values, global_step
+    if args.rank == 0:
+        epoch_stats = {"epoch_time": epoch_time}
+        epoch_stats.update(keep_avg.avg_values)
+        tb_logger.tb_train_epoch_stats(global_step, epoch_stats)
+        # TODO: plot model stats
+        # if c.tb_model_param_stats:
+        # tb_logger.tb_model_weights(model, global_step)
+        return keep_avg.avg_values, global_step
 
 
 @torch.no_grad()
@@ -461,7 +461,6 @@ if __name__ == "__main__":
     args = parse_arguments(sys.argv)
     c, OUT_PATH, AUDIO_PATH, c_logger, tb_logger = process_args(
         args, model_type='wavernn')
-
     try:
         main(args)
     except KeyboardInterrupt:

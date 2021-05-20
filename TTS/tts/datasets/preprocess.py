@@ -2,6 +2,7 @@ import os
 from glob import glob
 import re
 import sys
+import math
 from pathlib import Path
 from typing import List
 
@@ -194,7 +195,6 @@ def hasNumbers(inputString):
 
 def modi(root_path, meta_file):
     """Normalizes the modi data file to TTS format"""
-    print(root_path + ', ' + meta_file)
     txt_file = os.path.join(root_path, meta_file)
     items = []
     speaker_name = "modi"
@@ -204,6 +204,37 @@ def modi(root_path, meta_file):
             wav_file = os.path.join(root_path, cols[0])
             text = cols[1]
             items.append([text, wav_file, speaker_name])
+    return items
+
+def kamran(root_path, meta_file):
+    """Normalizes the kamran data file to TTS format"""
+    txt_file = os.path.join(root_path, meta_file)
+    items = []
+    speaker_name = "kamran"
+    with open(txt_file, 'r') as ttf:
+        for line in ttf:
+            cols = line.split('|')
+            wav_file = os.path.join(root_path, cols[0])
+            text = cols[1]
+            items.append([text, wav_file, speaker_name])
+    return items
+
+def get_folder(line_number):
+    cohort = math.floor(line_number/100) * 100
+    return str(cohort + 1) + '-' + str(cohort + 100)
+
+def kamran_linebased(root_path, meta_file):
+    txt_file = os.path.join(root_path, meta_file)
+    items = []
+    speaker_name = "kamran"
+    with open(txt_file, 'r') as ttf:
+        line_number = 0
+        for line in ttf:
+            folder = get_folder(line_number)
+            for emotion in ['Angry', 'Sad', 'Happy', 'Surprised', 'Neutral', 'Scared', 'Voiceover']:
+                wav_file = os.path.join(root_path, folder, emotion, str(line_number%100+1) + '-' + emotion.lower() + '.wav')
+                items.append([line.rstrip(), wav_file, speaker_name])
+            line_number += 1
     return items
 
 
