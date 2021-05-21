@@ -37,7 +37,7 @@
         "symmetric_norm": true, // move normalization to range [-1, 1]
         "max_norm": 4.0,        // scale normalization to range [-max_norm, max_norm] or [0, max_norm]
         "clip_norm": true,      // clip normalized values into the range.
-        "stats_path": "stats.npy"      // DO NOT USE WITH MULTI_SPEAKER MODEL. scaler stats file computed by 'compute_statistics.py'. If it is defined, mean-std based notmalization is used and other normalization params are ignored
+        "stats_path": null      // DO NOT USE WITH MULTI_SPEAKER MODEL. scaler stats file computed by 'compute_statistics.py'. If it is defined, mean-std based notmalization is used and other normalization params are ignored
     },
 
     // VOCABULARY PARAMETERS
@@ -63,8 +63,8 @@
     // TRAINING
     "batch_size": 32,       // Batch size for training. Lower values than 32 might cause hard to learn attention. It is overwritten by 'gradual_training'.
     "eval_batch_size":16,
-    "r": 4,                 // Number of decoder frames to predict per iteration. Set the initial values if gradual training is enabled.
-    "gradual_training": [[0, 4, 64], [1, 4, 64], [50000, 2, 32], [130000, 2, 32], [290000, 1, 32]], 
+    "r": 8,                 // Number of decoder frames to predict per iteration. Set the initial values if gradual training is enabled.
+    "gradual_training": null, 
     "mixed_precision": false,     // level of optimization with NVIDIA's apex feature for automatic mixed FP16/FP32 precision (AMP), NOTE: currently only O1 is supported, and use "O1" to activate.
 
     // LOSS SETTINGS
@@ -145,10 +145,10 @@
     "phoneme_language": "hi",     // depending on your target language, pick one from  https://github.com/bootphon/phonemizer#languages
 
     // MULTI-SPEAKER and GST
-    "use_speaker_embedding": false,      // use speaker embedding to enable multi-speaker learning.
-    "use_gst": false,       			    // use global style tokens
+    "use_speaker_embedding": true,      // use speaker embedding to enable multi-speaker learning.
+    "use_gst": false,          	        // use global style tokens
     "use_external_speaker_embedding_file": false, // if true, forces the model to use external embedding per sample instead of nn.embeddings, that is, it supports external embeddings such as those used at: https://arxiv.org/abs /1806.04558
-    "external_speaker_embedding_file": "../../speakers-vctk-en.json", // if not null and use_external_speaker_embedding_file is true, it is used to load a specific embedding file and thus uses these embeddings instead of nn.embeddings, that is, it supports external embeddings such as those used at: https://arxiv.org/abs /1806.04558
+    "external_speaker_embedding_file": null, // if not null and use_external_speaker_embedding_file is true, it is used to load a specific embedding file and thus uses these embeddings instead of nn.embeddings, that is, it supports external embeddings such as those used at: https://arxiv.org/abs /1806.04558
     "gst":	{			                // gst parameter if gst is enabled
         "gst_style_input": null,        // Condition the style input either on a
                                         // -> wave file [path to wave] or
