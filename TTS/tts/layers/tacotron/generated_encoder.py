@@ -2,8 +2,8 @@ import torch
 from torch.nn import functional as F
 from torch.nn import Sequential, Embedding, Linear
 
-
-from torch._six import container_abcs
+import collections.abc as container_abcs
+#from torch._six import container_abcs
 
 from itertools import repeat
 from typing import List
