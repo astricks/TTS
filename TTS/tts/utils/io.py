@@ -89,7 +89,7 @@ def save_checkpoint(model, optimizer, current_step, epoch, r, output_folder, cha
 
 
 def save_best_model(
-    target_loss, best_loss, model, optimizer, current_step, epoch, r, output_folder, characters, speaker_encoder, **kwargs
+    target_loss, best_loss, model, optimizer, current_step, epoch, r, output_folder, characters, speaker_encoder=None, **kwargs
 ):
     """Save model checkpoint, intended for saving the best model after each epoch.
     It compares the current model loss with the best loss so far and saves the
