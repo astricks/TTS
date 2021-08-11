@@ -158,7 +158,7 @@ def main():
 
     # RUN THE SYNTHESIS
     # load models
-    synthesizer = Synthesizer(model_path, config_path, vocoder_path, vocoder_config_path, args.use_cuda)
+    synthesizer = Synthesizer(model_path, config_path, vocoder_path, vocoder_config_path, args.use_cuda, args=args)
 
     print(" > Text: {}".format(args.text))
 
