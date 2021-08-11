@@ -6,6 +6,7 @@ import torch
 
 from TTS.tts.utils.generic_utils import setup_model
 from TTS.tts.utils.speakers import load_speaker_mapping
+from TTS.tts.utils.speakers import parse_speakers, parse_languages
 
 # pylint: disable=unused-wildcard-import
 # pylint: disable=wildcard-import
@@ -43,11 +44,18 @@ class Synthesizer(object):
         self.use_cuda = use_cuda
         self.wavernn = None
         self.vocoder_model = None
-        self.num_speakers = 0
-        self.tts_speakers = None
-        self.speaker_embedding_dim = None
         self.seg = self.get_segmenter("en")
         self.use_cuda = use_cuda
+
+        num_speakers, speaker_list, speaker_embedding_dim, speaker_mapping = parse_speakers(c, args, meta_data_train, OUT_PATH, meta_data_eval)
+        num_langs, language_embedding_dim, language_mapping = parse_languages(c, args, meta_data_train, OUT_PATH)
+
+        print(f"Training with speakers : {speaker_list}")
+
+        self.num_speakers = num_speakers
+        self.tts_speakers = speaker_mapping
+        self.speaker_embedding_dim = speaker_embedding_dim
+
         if self.use_cuda:
             assert torch.cuda.is_available(), "CUDA is not availabe on this machine."
         self.load_tts(tts_checkpoint, tts_config, use_cuda)
@@ -100,7 +108,7 @@ class Synthesizer(object):
         else:
             self.input_size = len(symbols)
 
-        self.tts_model = setup_model(self.input_size, num_speakers=self.num_speakers, c=self.tts_config)
+        self.tts_model = setup_model(self.input_size, num_speakers=self.num_speakers, num_langs=self.num_langs, c=self.tts_config)
         self.tts_model.load_checkpoint(tts_config, tts_checkpoint, eval=True)
         if use_cuda:
             self.tts_model.cuda()
