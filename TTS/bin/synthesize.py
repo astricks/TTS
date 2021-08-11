@@ -186,7 +186,7 @@ def main():
     #         gst_style = args.gst_style
 
     # kick it
-    wav = synthesizer.tts(args.text)
+    wav = synthesizer.tts(args.text, args.speaker_idx)
 
     # save the results
     print(" > Saving output to {}".format(args.out_path))

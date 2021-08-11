@@ -73,7 +73,7 @@ def parse_speakers(c, args, meta_data_train, OUT_PATH, meta_data_eval=None, trai
             speakers += get_speakers(meta_data_eval)
             speakers = list(set(speakers))
 
-        if args.restore_path:
+        if hasattr(args, "restore_path") and args.restore_path:
             if c.use_external_speaker_embedding_file:  # if restore checkpoint and use External Embedding file
                 if not training:
                     speaker_mapping = load_speaker_mapping(c.external_speaker_embedding_file)
@@ -128,7 +128,7 @@ def parse_speakers(c, args, meta_data_train, OUT_PATH, meta_data_eval=None, trai
 def parse_languages(c, args, meta_data_train, OUT_PATH):
     if c.use_language_embedding:
         languages = get_languages(meta_data_train)
-        if args.restore_path:
+        if hasattr(args, "restore_path") and args.restore_path:
             prev_out_path = os.path.dirname(args.restore_path)
             language_mapping = load_language_mapping(prev_out_path)
             language_embedding_dim = None

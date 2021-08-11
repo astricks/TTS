@@ -64,6 +64,7 @@ class Synthesizer(object):
 
         self.num_speakers = num_speakers
         self.tts_speakers = speaker_mapping
+        self.num_langs = num_langs
         self.speaker_embedding_dim = speaker_embedding_dim
 
         if self.use_cuda:
@@ -94,9 +95,6 @@ class Synthesizer(object):
         # load speakers
         speaker_embedding = None
         if hasattr(self, "tts_speakers") and speaker_idx is not None:
-            assert speaker_idx < len(
-                self.tts_speakers
-            ), f" [!] speaker_idx is out of the range. {speaker_idx} vs {len(self.tts_speakers)}"
             if self.tts_config.use_external_speaker_embedding_file:
                 speaker_embedding = self.tts_speakers[speaker_idx]["embedding"]
         return speaker_embedding
@@ -118,7 +116,7 @@ class Synthesizer(object):
         else:
             self.input_size = len(symbols)
 
-        self.tts_model = setup_model(self.input_size, num_speakers=self.num_speakers, num_langs=self.num_langs, c=self.tts_config)
+        self.tts_model = setup_model(self.input_size, num_speakers=self.num_speakers, num_langs=self.num_langs, c=self.tts_config, speaker_embedding_dim=512)
         self.tts_model.load_checkpoint(tts_config, tts_checkpoint, eval=True)
         if use_cuda:
             self.tts_model.cuda()

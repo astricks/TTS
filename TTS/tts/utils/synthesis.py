@@ -294,9 +294,9 @@ def synthesis(
     inputs = text_to_seqvec(text, CONFIG, language=language)
     # pass tensors to backend
     if backend == "torch":
-        if speaker_id is not None:
-            speaker_id = id_to_torch([speaker_id], cuda=use_cuda)
-
+        #if speaker_id is not None:
+        #    speaker_id = id_to_torch([speaker_id], cuda=use_cuda)
+ 
         if language_id is not None:
             language_id = id_to_torch([language_id], cuda=use_cuda)
 
