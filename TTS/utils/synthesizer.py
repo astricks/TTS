@@ -8,6 +8,9 @@ from TTS.tts.utils.generic_utils import setup_model
 from TTS.tts.utils.speakers import load_speaker_mapping
 from TTS.tts.utils.speakers import parse_speakers, parse_languages
 
+from TTS.tts.datasets.preprocess import load_meta_data
+from TTS.utils.io import load_config
+
 # pylint: disable=unused-wildcard-import
 # pylint: disable=wildcard-import
 from TTS.tts.utils.synthesis import synthesis, trim_silence
@@ -18,7 +21,7 @@ from TTS.vocoder.utils.generic_utils import interpolate_vocoder_input, setup_gen
 
 
 class Synthesizer(object):
-    def __init__(self, tts_checkpoint, tts_config, vocoder_checkpoint=None, vocoder_config=None, use_cuda=False):
+    def __init__(self, tts_checkpoint, tts_config, vocoder_checkpoint=None, vocoder_config=None, use_cuda=False, args=None):
         """General 🐸 TTS interface for inference. It takes a tts and a vocoder
         model and synthesize speech from the provided text.
 
@@ -46,6 +49,13 @@ class Synthesizer(object):
         self.vocoder_model = None
         self.seg = self.get_segmenter("en")
         self.use_cuda = use_cuda
+
+        # load config
+        c = load_config(tts_config)
+        OUT_PATH = "/home/arvind/code/output/"
+
+        # load data instances
+        meta_data_train, meta_data_eval = load_meta_data(c.datasets)
 
         num_speakers, speaker_list, speaker_embedding_dim, speaker_mapping = parse_speakers(c, args, meta_data_train, OUT_PATH, meta_data_eval)
         num_langs, language_embedding_dim, language_mapping = parse_languages(c, args, meta_data_train, OUT_PATH)
