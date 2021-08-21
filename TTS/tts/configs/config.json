@@ -1,7 +1,7 @@
 {
     "model": "Tacotron2",
     "run_name": "multilingual-v0.1.3-btcsessions",
-    "run_description": "btcsessions+latam+vctk with awesome speaker embeddings for voice cloning",
+    "run_description": "btcsessions+latam+vctk+libritts with awesome speaker embeddings for voice cloning",
 
     // AUDIO PARAMETERS
     "audio":{
@@ -13,13 +13,13 @@
         "frame_shift_ms": null,  // stft window hop-lengh in ms. If null, 'hop_length' is used.
 
         // Audio processing parameters
-        "sample_rate": 22050,   // DATASET-RELATED: wav sample-rate.
+        "sample_rate": 48000,   // DATASET-RELATED: wav sample-rate.
         "preemphasis": 0.0,     // pre-emphasis to reduce spec noise and make it more structured. If 0.0, no -pre-emphasis.
         "ref_level_db": 20,     // reference level db, theoretically 20db is the sound of air.
         "stft_pad_mode": "reflect",
 
         // Silence trimming
-        "do_trim_silence": true,// enable trimming of slience of audio as you load it. LJspeech (true), TWEB (false), Nancy (true)
+        "do_trim_silence": false,// enable trimming of slience of audio as you load it. LJspeech (true), TWEB (false), Nancy (true)
         "trim_db": 40,          // threshold for timming silence. Set this according to your dataset.
 
         // Griffin-Lim
@@ -185,29 +185,39 @@
     "perfect_language_sampler": false,
     "datasets":   // List of datasets. They all merged and they get different speaker_ids.
         [
+            {
+                "name": "vctk",
+                "path": "/home/arvind/data/48kvctk/VCTK-Corpus-removed-silence/",
+                "meta_file_train": null, // for vtck if list, ignore speakers id in list for train, its useful for test cloning with new speakers
+                "meta_file_val": null,
+                "language": "english" 
+            },
+            {
+                "name": "btcsessions",
+                "path": "/home/arvind/data/btcsessions/",
+                "meta_file_train": "metadata.tsv",
+                "meta_file_val": null, 
+                "language": "english" 
+            },
+            {
+                "name": "latam",
+                "path": "/home/arvind/data/LatinAmericanTTS/",
+                "meta_file_train": "metadata.tsv",
+                "meta_file_val": null,
+		"language": "spanish"
+            },
+            {
+		"name": "libri_tts",
+		"path": "/home/arvind/data/LibriTTS/",
+		"meta_file_train": null,
+		"meta_file_val": null,
+		"language": "english"
+	    }
             //{
             //    "name": "ljspeech",
             //    "path": "/home/arvind/data/LJSpeech-1.1/",
             //    "meta_file_train": "metadata.csv", // for vtck if list, ignore speakers id in list for train, its useful for test cloning with new speakers
             //    "meta_file_val": null 
             //},
-            {
-                "name": "vctk",
-                "path": "/home/arvind/data/VCTK-Corpus-removed-silence/",
-                "meta_file_train": null, // for vtck if list, ignore speakers id in list for train, its useful for test cloning with new speakers
-                "meta_file_val": null 
-            },
-            {
-                "name": "btcsessions",
-                "path": "/home/arvind/data/btcsessions/",
-                "meta_file_train": "metadata.tsv", // for vtck if list, ignore speakers id in list for train, its useful for test cloning with new speakers
-                "meta_file_val": null 
-            },
-            {
-                "name": "latam",
-                "path": "/home/arvind/data/LatinAmericanTTS/",
-                "meta_file_train": "metadata.tsv", // for vtck if list, ignore speakers id in list for train, its useful for test cloning with new speakers
-                "meta_file_val": null 
-            }
         ]
 }
