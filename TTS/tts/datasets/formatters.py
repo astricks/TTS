@@ -255,7 +255,7 @@ def libri_tts(root_path, meta_files=None):
         with open(meta_file, "r") as ttf:
             for line in ttf:
                 cols = line.split("\t")
-                file_name = '48k_' + cols[0]
+                file_name = cols[0]
                 speaker_name, chapter_id, *_ = cols[0].split("_")
                 _root_path = os.path.join(root_path, "vad_train-clean-360", f"{speaker_name}/{chapter_id}")
                 wav_file = os.path.join(_root_path, file_name + ".wav")
