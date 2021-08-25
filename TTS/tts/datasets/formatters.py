@@ -132,7 +132,7 @@ def latam(root_path, meta_file) :
             speaker_name = cols[0][:3] + cols[0].split("_")[1].strip()
             country = map_to_country(cols[0][0:2])
             mf = 'male' if cols[0][2] == 'm' else 'female'
-            wav_file = os.path.join(root_path.replace('Latin', 'CleanedLatin'), country, mf, 'trimmed_' + cols[0] + '.wav').strip()
+            wav_file = os.path.join(root_path.replace('Latin', 'CleanedLatin'), country, mf, 'trimmed_' + cols[0] + '_16k.wav').strip()
             text = cols[1].strip()
             items.append([text, wav_file, speaker_name])
     return items
@@ -145,7 +145,7 @@ def btcsessions(root_path, meta_file) :
     with open(txt_file, "r", encoding="utf-8") as ttf:
         for line in ttf:
             cols = line.split("|")
-            wav_file = os.path.join(root_path, cols[0]).strip().replace('btcsessions/', 'btcsessions/48k_')
+            wav_file = os.path.join(root_path, cols[0]).strip().replace('btcsessions/', 'btcsessions/48k_').replace('.wav', '_16k.wav')
             text = cols[1].strip()
             items.append([text, wav_file, speaker_name])
     return items
@@ -258,11 +258,10 @@ def libri_tts(root_path, meta_files=None):
                 file_name = cols[0]
                 speaker_name, chapter_id, *_ = cols[0].split("_")
                 _root_path = os.path.join(root_path, "vad_train-clean-360", f"{speaker_name}/{chapter_id}")
-                wav_file = os.path.join(_root_path, file_name + ".wav")
+                wav_file = os.path.join(_root_path, file_name + "_16k.wav")
                 text = cols[2]
                 items.append([text, wav_file, "LTTS_" + speaker_name])
     for item in items:
-        print(os.path.exists(item[1]))
         assert os.path.exists(item[1]), f" [!] wav files don't exist - {item[1]}"
     return items
 
@@ -315,7 +314,7 @@ def vctk(root_path, meta_files=None, wavs_path="wav48"):
                 continue
         with open(meta_file) as file_text:
             text = file_text.readlines()[0]
-        wav_file = os.path.join(root_path, wavs_path, speaker_id, file_id + ".wav")
+        wav_file = os.path.join(root_path, wavs_path, speaker_id, file_id + "_16k.wav")
         items.append([text, wav_file, "VCTK_" + speaker_id])
 
     return items
