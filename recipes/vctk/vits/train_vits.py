@@ -36,9 +36,9 @@ config = VitsConfig(
     run_eval=True,
     test_delay_epochs=-1,
     epochs=1000,
-    text_cleaner="english_cleaners",
+    text_cleaner="basic_cleaners",
     use_phonemes=True,
-    phoneme_language="en",
+    phoneme_language="hi",
     phoneme_cache_path=os.path.join(output_path, "phoneme_cache"),
     compute_input_seq_cache=True,
     print_step=25,
@@ -48,6 +48,20 @@ config = VitsConfig(
     output_path=output_path,
     datasets=[dataset_config],
     cudnn_benchmark=False,
+    characters=CharactersConfig(
+        characters_class="TTS.tts.models.vits.VitsCharacters",
+        pad="<PAD>",
+        eos="<EOS>",
+        bos="<BOS>",
+        blank="<BLNK>",
+	characters="अआइईउऊएऐऑओऔकखगघचछजझञटठडढणतथदधनपफबभमयरलवशषसह़ा",
+	punctuations=" !,.?ँं।",
+        phonemes=None,
+    ),
+    test_sentences=[
+        ["यह भयानक है क्योंकि अधीक्षण एआई जानबूझकर या अनजाने में मानव सभ्यता को नष्ट करने की शक्ति का उपयोग करता है।", "kamran", None, "hi"],
+        ["हम मूलभूत सामाजिक परिवर्तन की दहलीज पर खड़े हैं।", "kamran", None, "hi"],
+    ],
 )
 
 # INITIALIZE THE AUDIO PROCESSOR
