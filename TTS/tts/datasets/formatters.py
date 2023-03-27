@@ -149,6 +149,20 @@ def mailabs(root_path, meta_files=None, ignored_speakers=None):
     return items
 
 
+def kamran(root_path, meta_file, **kwargs):
+    txt_file = os.path.join(root_path, meta_file)
+    items = []
+    with open(txt_file, 'r') as ttf:
+        line_number = 0
+        emotion = 'Voiceover'
+        for line in ttf:
+            folder = get_folder(line_number)
+            wav_file = os.path.join(root_path, 'voiceovers', folder + '_' + str(line_number%100+1) +'-' + emotion.lower() + '.wav')
+            items.append({"text": line, "audio_file": wav_file, "speaker_name": 'kamran'})
+            line_number += 1
+    return items
+
+
 def ljspeech(root_path, meta_file, **kwargs):  # pylint: disable=unused-argument
     """Normalizes the LJSpeech meta data file to TTS format
     https://keithito.com/LJ-Speech-Dataset/"""
